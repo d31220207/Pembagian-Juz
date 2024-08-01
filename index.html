@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
     <title>Pembagian Juz</title>
     <style>
         body {
@@ -60,7 +62,8 @@
             font-weight: 600;
             color: #333841;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.1rem;
+            /* Mengurangi margin bawah dari judul */
             font-family: "Montserrat", sans-serif;
         }
 
@@ -81,7 +84,8 @@
             font-family: 'Open Sans', sans-serif;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 6px;
             text-align: left;
@@ -105,15 +109,26 @@
             border: 1px solid transparent;
             background: transparent;
             font-size: 16px;
-            font-family: 'Open Sans', sans-serif; 
-            width: 100px; /* Lebar kolom nama diatur di sini */
-            overflow: hidden; /* Menyembunyikan teks yang melampaui lebar kolom */
-            text-overflow: ellipsis; /* Menambahkan ellipsis jika teks terlalu panjang */
+            font-family: 'Open Sans', sans-serif;
+            width: 100px;
+            /* Lebar kolom nama diatur di sini */
+            overflow: hidden;
+            /* Menyembunyikan teks yang melampaui lebar kolom */
+            text-overflow: ellipsis;
+            /* Menambahkan ellipsis jika teks terlalu panjang */
         }
 
         .editable:focus {
             border: 1px solid #3498db;
             background: #fff;
+        }
+
+        .date {
+            text-align: center;
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+            font-family: 'Open Sans', sans-serif;
         }
     </style>
 </head>
@@ -122,6 +137,7 @@
     <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-auto">
         <div class="p-8">
             <h1 class="text-2xl font-bold mb-4 text-center">PEMBAGIAN JUZ</h1>
+            <div id="date" class="date"></div>
             <div class="table-container">
                 <table>
                     <tbody id="daftarContainer">
@@ -133,12 +149,26 @@
                 <button onclick="acakNama()" class="button button-red">Acak Nama</button>
                 <button onclick="exportNama()" class="button">Ekspor Nama</button>
                 <input type="file" id="importFile" accept=".txt" style="display: none;" onchange="importNama(event)">
-                <button onclick="document.getElementById('importFile').click()" class="button button-green">Impor Nama</button>
+                <button onclick="document.getElementById('importFile').click()" class="button button-green">Impor
+                    Nama</button>
             </div>
         </div>
     </div>
 
     <script>
+        function formatTanggal() {
+            const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const now = new Date();
+            const hariNama = hari[now.getDay()];
+            const tanggal = now.getDate();
+            const bulanNama = bulan[now.getMonth()];
+            const tahun = now.getFullYear();
+
+            const tanggalFormatted = `${hariNama}, ${tanggal} ${bulanNama} ${tahun}`;
+            document.getElementById('date').innerText = tanggalFormatted;
+        }
+
         let daftar = [
             { nama: "Sutrisno", angka: [1, 2] },
             { nama: "Farida", angka: [3, 4] },
@@ -217,6 +247,7 @@
         }
 
         tampilkanDaftar();
+        formatTanggal();
     </script>
 </body>
 
