@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <title>Pembagian Juz</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7fafc;
+            color: #2d3748;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: white;
+            font-weight: normal;
+            font-size: 12px;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .button-green {
+            background-color: #1f8b4c;
+        }
+
+        .button-green:hover {
+            background-color: #176839;
+        }
+
+        .button-red {
+            background-color: #e74c3c;
+        }
+
+        .button-red:hover {
+            background-color: #c0392b;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333841;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .grid-container {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: left;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .editable {
+            border: 1px solid transparent;
+            background: transparent;
+            font-size: 16px;
+            font-family: 'Open Sans', sans-serif; 
+            width: 100px; /* Lebar kolom nama diatur di sini */
+            overflow: hidden; /* Menyembunyikan teks yang melampaui lebar kolom */
+            text-overflow: ellipsis; /* Menambahkan ellipsis jika teks terlalu panjang */
+        }
+
+        .editable:focus {
+            border: 1px solid #3498db;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-8 flex flex-col justify-center items-center min-h-screen">
+    <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-auto">
+        <div class="p-8">
+            <h1 class="text-2xl font-bold mb-4 text-center">PEMBAGIAN JUZ</h1>
+            <div class="table-container">
+                <table>
+                    <tbody id="daftarContainer">
+                        <!-- Isi tabel akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="button-container">
+                <button onclick="acakNama()" class="button button-red">Acak Nama</button>
+                <button onclick="exportNama()" class="button">Ekspor Nama</button>
+                <input type="file" id="importFile" accept=".txt" style="display: none;" onchange="importNama(event)">
+                <button onclick="document.getElementById('importFile').click()" class="button button-green">Impor Nama</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let daftar = [
+            { nama: "Sutrisno", angka: [1, 2] },
+            { nama: "Farida", angka: [3, 4] },
+            { nama: "Aaf", angka: [5, 6] },
+            { nama: "Nafiah", angka: [7, 8] },
+            { nama: "Taufiq", angka: [9, 10] },
+            { nama: "Rohmatun", angka: [11, 12] },
+            { nama: "Ria", angka: [13, 14] },
+            { nama: "Eva", angka: [15, 16] },
+            { nama: "Yuyun", angka: [17, 18] },
+            { nama: "Tutik", angka: [19, 20] },
+            { nama: "Suryani", angka: [21, 22] },
+            { nama: "Indayati", angka: [23, 24] },
+            { nama: "Nunun", angka: [25, 26] },
+            { nama: "Muhimmah", angka: [27, 28] },
+            { nama: "Sundari", angka: [29, 30] },
+        ];
+
+        function tampilkanDaftar() {
+            const container = document.getElementById('daftarContainer');
+            container.innerHTML = '';
+            daftar.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="${item.nama}" class="editable" data-index="${index}" onchange="ubahNama(event)"></td>
+                    <td>${item.angka[0]}</td>
+                    <td>${item.angka[1]}</td>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function ubahNama(event) {
+            const index = event.target.getAttribute('data-index');
+            const newNama = event.target.value.trim();
+            if (newNama) {
+                daftar[index].nama = newNama;
+            }
+        }
+
+        function acakNama() {
+            let namaTeracak = [...daftar.map(item => item.nama)].sort(() => Math.random() - 0.5);
+            daftar.forEach((item, index) => {
+                item.nama = namaTeracak[index];
+            });
+            tampilkanDaftar();
+        }
+
+        function exportNama() {
+            const namaList = daftar.map(item => item.nama).join('\n');
+            const blob = new Blob([namaList], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'daftar_nama.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importNama(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const namaList = e.target.result.split('\n').filter(nama => nama.trim() !== '');
+                if (namaList.length > 0) {
+                    daftar = namaList.map((nama, index) => ({
+                        nama: nama.trim(),
+                        angka: daftar[index] ? daftar[index].angka : [index * 2 + 1, index * 2 + 2]
+                    }));
+                    tampilkanDaftar();
+                } else {
+                    alert('File kosong atau tidak berisi nama yang valid.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        tampilkanDaftar();
+    </script>
+</body>
+
+</html>
