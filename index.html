@@ -157,7 +157,7 @@
 
     <script>
         function formatTanggal() {
-            const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const hari = ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
             const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             const now = new Date();
             const hariNama = hari[now.getDay()];
@@ -165,16 +165,19 @@
             const bulanNama = bulan[now.getMonth()];
             const tahun = now.getFullYear();
 
-            const tanggalFormatted = `${hariNama}, ${tanggal} ${bulanNama} ${tahun}`;
-            document.getElementById('date').innerText = tanggalFormatted;
+            // Format tanggal dengan menambahkan nol di depan jika kurang dari 10
+            const tanggalFormatted = tanggal < 10 ? `0${tanggal}` : tanggal;
+            const tanggalString = `( ${hariNama}, ${tanggalFormatted} ${bulanNama} ${tahun} )`;
+
+            document.getElementById('date').innerText = tanggalString;
         }
 
         let daftar = [
             { nama: "Sutrisno", angka: [1, 2] },
             { nama: "Farida", angka: [3, 4] },
             { nama: "Aaf", angka: [5, 6] },
-            { nama: "Nafiah", angka: [7, 8] },
-            { nama: "Taufiq", angka: [9, 10] },
+            { nama: "Taufiq", angka: [7, 8] },
+            { nama: "Nafiah", angka: [9, 10] },
             { nama: "Rohmatun", angka: [11, 12] },
             { nama: "Ria", angka: [13, 14] },
             { nama: "Eva", angka: [15, 16] },
